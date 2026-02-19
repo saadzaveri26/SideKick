@@ -25,7 +25,7 @@ export const FileExplorer= ({
     projectId: Id<"projects">;
 }) => {
     const [collapseKey, setCollapseKey] = useState(0);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const [creating, setCreating] = useState<"file" | "folder" | null>(null);
 
     const project = useProject(projectId);
@@ -70,7 +70,7 @@ export const FileExplorer= ({
                     className={cn("size-4 shrink-0 text-muted-foreground", isOpen && "rotate-90"
 
                     )} />
-                    <p className="text-xs uppercase lime-clamp-1">
+                    <p className="text-xs uppercase line-clamp-1">
                         {project?.name ?? "Loading..."}
                     </p>
                     <div className="opacity-0 group-hover/project:opacity-100 transition-none duration-0 flex items-center gap-0.5 ml-auto">
