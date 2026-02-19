@@ -3,6 +3,19 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import { useQuery } from "convex/react";
 
+export const useFile= (fileId: Id<"files"> | null) => {
+    return useQuery(api.files.getFile, fileId ? { id: fileId} : "skip")
+
+};
+
+export const useFilePath = (fileId: Id<"files"> | null) => {
+    return useQuery(api.files.getFilePath, fileId ? { id: fileId} : "skip")
+}
+
+export const useUpdateFile = () => {
+    return useMutation(api.files.updateFile)
+}
+
 
 export const useCreateFile = () => {
     return useMutation(api.files.createFile);
