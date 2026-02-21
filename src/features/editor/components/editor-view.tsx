@@ -1,7 +1,7 @@
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useEditor } from "../hooks/use-editor";
 import { useFile, useUpdateFile } from "@/features/projects/hooks/use-files";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { TopNavigation } from "./top-navigation";
 import { FileBreadcrumbs } from "./file-breadcrumbs";
 import Image from "next/image";
@@ -16,6 +16,14 @@ export const EditorView= ({ projectId}: { projectId: Id<"projects"> }) => {
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const isActiveFileBinary = activeFile && activeFile.storageId;
     const isActiveFileText = activeFile && !activeFile.storageId;
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [activeTabId]);
 
     
 
