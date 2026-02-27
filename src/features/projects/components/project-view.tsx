@@ -15,7 +15,7 @@ import { FaGithub } from "react-icons/fa";
 import { Kbd } from "@/components/ui/kbd";
 import { ProjectsList } from "./projects-list";
 import { useCreateProject } from "../hooks/use-projects";
-
+import { ImportGithubDialog } from "./import-github-dialog";
 const font = Poppins({
     subsets: ["latin"],
     weight: ["400", "500", "600", "700"],
@@ -25,6 +25,7 @@ export const ProjectsView = () => {
 
     const createProject = useCreateProject();
         const [commandDialogOpen, setCommandDialogOpen] = useState(false);
+        const [importDialogOpen, setImportDialogOpen] = useState(false);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,6 +33,10 @@ export const ProjectsView = () => {
                 if (e.key === "k") {
                     e.preventDefault();
                     setCommandDialogOpen(true);
+                }
+                if (e.key ==="i") {
+                    e.preventDefault();
+                    setImportDialogOpen(true);
                 }
             }
             }
@@ -50,6 +55,7 @@ export const ProjectsView = () => {
         <ProjectCommandDialog 
         open={commandDialogOpen}
         onOpenChange={setCommandDialogOpen} />
+        <ImportGithubDialog open={importDialogOpen} onOpenChange={setCommandDialogOpen} />
         <div className="min-h-screen bg-sidebar flex flex-col items-center justify-centre p-6 md:p-16">
             <div className="w-full max-w-sm mx-auto flex flex-col gap-4 items-center">
                 <div className="flex justify-between gap-4 w-full items-center">
@@ -96,7 +102,7 @@ export const ProjectsView = () => {
                         </Button>
                         <Button
                         variant="outline"
-                        onClick={() => {}}
+                        onClick={() => setImportDialogOpen(true)}
                         className="h-full items-start justify-start p-4 bg-background border flex flex-col gap-6 rounded-none">
                             <div className="flex items-center justify-between w-full">
                                 <FaGithub className="size-4" />
