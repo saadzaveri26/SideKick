@@ -18,7 +18,7 @@ export default defineSchema({
                 v.literal("exporting"),
                 v.literal("completed"),
                 v.literal("failed"),
-                v.literal("completed"),
+                v.literal("cancelled"),
             ),
         ),
         exportRepoUrl: v.optional(v.string()),
