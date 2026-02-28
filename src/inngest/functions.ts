@@ -1,6 +1,6 @@
 import { inngest } from "./client";
 import { generateText } from "ai"
-import { anthropic } from "@ai-sdk/anthropic"
+import { mistral } from "@ai-sdk/mistral"
 import { firecrawl } from "@/lib/firecrawl";
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
@@ -32,7 +32,7 @@ export const demoGenerate = inngest.createFunction(
 
     await step.run("generate-text", async () => {
       return await generateText({
-        model: anthropic('claude-3-5-haiku-20241022'),
+        model: mistral("codestral-latest"),
         prompt: finalPrompt,
         experimental_telemetry:{
             isEnabled: true,
