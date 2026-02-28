@@ -1,4 +1,4 @@
-import { createAgent, anthropic, createNetwork } from '@inngest/agent-kit';
+import { createAgent, openai , createNetwork } from '@inngest/agent-kit';
 
 import { inngest } from "@/inngest/client";
 import { Id } from "../../../../convex/_generated/dataModel";
@@ -117,9 +117,11 @@ export const processMessage = inngest.createFunction(
        const titleAgent = createAgent({
         name: "title-generator",
         system: TITLE_GENERATOR_SYSTEM_PROMPT,
-        model: anthropic({
-          model: "claude-3-5-haiku-20241022",
-          defaultParameters: {temperature: 0, max_tokens: 50},
+        model: openai({
+          model: "codestral-latest",
+          apiKey: process.env.MISTRAL_API_KEY,
+          baseUrl: "https://api.mistral.ai/v1",
+          
         }),
        });
 
@@ -155,9 +157,11 @@ export const processMessage = inngest.createFunction(
       name: "sidekick",
       description: "An expert AI coding assistant",
       system: systemPrompt,
-       model: anthropic({
-        model: "claude-3-5-sonnet-20240620",
-        defaultParameters: { temperature: 0.3, max_tokens: 12000},
+       model: openai({
+        model: "codestral-latest",
+        apiKey: process.env.MISTRAL_API_KEY,
+        baseUrl: "https://api.mistral.ai/v1",
+        
        }),
        tools: [
         createListFilesTool({ internalKey, projectId }),
