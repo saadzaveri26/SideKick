@@ -18,6 +18,7 @@ import { createCreateFolderTool } from './tools/create-folder';
 import { createRenameFileTool } from './tools/rename-file';
 import { createDeleteFilesTool } from './tools/delete-files';
 import { createScrapeUrlsTool } from './tools/scrape-urls';
+import { openrouter } from '@/app/api/quick-edit/route';
 
 interface MessageEvent {
   messageId: Id<"messages">;
@@ -118,10 +119,10 @@ export const processMessage = inngest.createFunction(
         name: "title-generator",
         system: TITLE_GENERATOR_SYSTEM_PROMPT,
         model: openai({
-          model: "codestral-latest",
-          apiKey: process.env.MISTRAL_API_KEY,
-          baseUrl: "https://api.mistral.ai/v1",
-          
+          model: "gpt-4o-mini",
+          baseUrl: "https://models.inference.ai.azure.com",
+          apiKey: process.env.GITHUB_TOKEN as string,
+          defaultParameters: { temperature: 1, max_completion_tokens: 500}
         }),
        });
 
@@ -158,9 +159,10 @@ export const processMessage = inngest.createFunction(
       description: "An expert AI coding assistant",
       system: systemPrompt,
        model: openai({
-        model: "codestral-latest",
-        apiKey: process.env.MISTRAL_API_KEY,
-        baseUrl: "https://api.mistral.ai/v1",
+        model: "gpt-4o-mini",
+        apiKey: process.env.GITHUB_TOKEN as string,
+        baseUrl: "https://models.inference.ai.azure.com",
+        defaultParameters: { temperature: 1, max_completion_tokens: 16000}
         
        }),
        tools: [

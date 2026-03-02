@@ -2,7 +2,12 @@ import { generateText, Output } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import {mistral }  from "@ai-sdk/mistral";
+import { createOpenAI }  from "@ai-sdk/openai";
+
+const openrouter = createOpenAI({
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: process.env.GITHUB_TOKEN as string,
+});
 
 
 const suggestionSchema = z.object({
@@ -83,7 +88,7 @@ export async function POST(request: Request) {
       .replace("{lineNumber}", lineNumber.toString());
 
     const { output } = await generateText({
-      model: mistral("codestral-latest"),
+      model: openrouter("gpt-5.1"),
       output: Output.object({ schema: suggestionSchema }),
       prompt,
     });

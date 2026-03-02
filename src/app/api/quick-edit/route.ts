@@ -2,9 +2,14 @@ import { z } from "zod";
 import { generateText, Output } from "ai";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { mistral }  from "@ai-sdk/mistral";
+import { createOpenAI }  from "@ai-sdk/openai";
 
 import { firecrawl } from "@/lib/firecrawl";
+
+ export const openrouter = createOpenAI({
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: process.env.GITHUB_TOKEN as string,
+});
 
 const quickEditSchema = z.object({
   editedCode: z
@@ -102,7 +107,7 @@ export async function POST(request: Request) {
       .replace("{documentation}", documentationContext);
 
     const { output } = await generateText({
-      model: mistral("codestral-latest"),
+      model: openrouter("gpt-4o-mini"),
       output: Output.object({ schema: quickEditSchema }),
       prompt,
     });

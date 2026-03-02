@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { FaGithub } from "react-icons/fa";
-import {AlertCircleIcon , Command, GlobeIcon, Loader2Icon} from "lucide-react";
+import { AlertCircleIcon, GlobeIcon, Loader2Icon } from "lucide-react";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import {
     CommandDialog,
@@ -12,15 +12,13 @@ import {
 
 } from "@/components/ui/command";
 import { useProjects } from "../hooks/use-projects";
-import { on } from "events";
-import { get } from "http";
 
 interface ProjectCommandDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
 };
 
-const getProjectIcon = (project : Doc<"projects">) => {
+const getProjectIcon = (project: Doc<"projects">) => {
     if (project.importStatus === "completed") {
         return <FaGithub className="size-4 text-muted-foreground" />
     }
@@ -41,19 +39,19 @@ const getProjectIcon = (project : Doc<"projects">) => {
 export const ProjectCommandDialog = ({
     open,
     onOpenChange,
-} : ProjectCommandDialogProps) => {
+}: ProjectCommandDialogProps) => {
     const router = useRouter();
-    const projects  = useProjects();
+    const projects = useProjects();
 
-    const handleSelect =(projectId: string) => {
+    const handleSelect = (projectId: string) => {
         router.push(`/projects/${projectId}`);
         onOpenChange(false);
     };
 
     return (
         <CommandDialog open={open} onOpenChange={onOpenChange}
-        title ="Search Projects"
-        description="Search and navigate to your projects ">
+            title="Search Projects"
+            description="Search and navigate to your projects ">
             <CommandInput placeholder="Search projects..." />
             <CommandList>
                 <CommandEmpty>
@@ -62,8 +60,8 @@ export const ProjectCommandDialog = ({
                 <CommandGroup heading="Projects">
                     {projects?.map((projects) => (
                         <CommandItem key={projects._id}
-                        value={`${projects.name} ${projects._id}`}
-                        onSelect={() => handleSelect(projects._id)}>
+                            value={`${projects.name} ${projects._id}`}
+                            onSelect={() => handleSelect(projects._id)}>
                             {getProjectIcon(projects)}
                             <span>
                                 {projects.name}
@@ -71,9 +69,9 @@ export const ProjectCommandDialog = ({
 
                         </CommandItem>
                     ))}
-                     </CommandGroup>
+                </CommandGroup>
 
             </CommandList>
-            </CommandDialog>
+        </CommandDialog>
     )
 };

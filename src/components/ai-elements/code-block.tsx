@@ -4,7 +4,7 @@ import type { ComponentProps, CSSProperties, HTMLAttributes } from "react";
 import type {
   BundledLanguage,
   BundledTheme,
-  HighlighterGeneric,
+  Highlighter,
   ThemedToken,
 } from "shiki";
 
@@ -31,16 +31,12 @@ import {
 import { createHighlighter } from "shiki";
 
 // Shiki uses bitflags for font styles: 1=italic, 2=bold, 4=underline
-// biome-ignore lint/suspicious/noBitwiseOperators: shiki bitflag check
 // eslint-disable-next-line no-bitwise -- shiki bitflag check
 const isItalic = (fontStyle: number | undefined) => fontStyle && fontStyle & 1;
-// biome-ignore lint/suspicious/noBitwiseOperators: shiki bitflag check
 // eslint-disable-next-line no-bitwise -- shiki bitflag check
-// oxlint-disable-next-line eslint(no-bitwise)
 const isBold = (fontStyle: number | undefined) => fontStyle && fontStyle & 2;
+// eslint-disable-next-line no-bitwise -- shiki bitflag check
 const isUnderline = (fontStyle: number | undefined) =>
-  // biome-ignore lint/suspicious/noBitwiseOperators: shiki bitflag check
-  // oxlint-disable-next-line eslint(no-bitwise)
   fontStyle && fontStyle & 4;
 
 // Transform tokens to include pre-computed keys to avoid noArrayIndexKey lint
@@ -93,8 +89,8 @@ const LineSpan = ({
     {keyedLine.tokens.length === 0
       ? "\n"
       : keyedLine.tokens.map(({ token, key }) => (
-          <TokenSpan key={key} token={token} />
-        ))}
+        <TokenSpan key={key} token={token} />
+      ))}
   </span>
 );
 
@@ -123,7 +119,7 @@ const CodeBlockContext = createContext<CodeBlockContextType>({
 // Highlighter cache (singleton per language)
 const highlighterCache = new Map<
   string,
-  Promise<HighlighterGeneric<BundledLanguage, BundledTheme>>
+  Promise<Highlighter>
 >();
 
 // Token cache
@@ -140,7 +136,7 @@ const getTokensCacheKey = (code: string, language: BundledLanguage) => {
 
 const getHighlighter = (
   language: BundledLanguage
-): Promise<HighlighterGeneric<BundledLanguage, BundledTheme>> => {
+): Promise<Highlighter> => {
   const cached = highlighterCache.get(language);
   if (cached) {
     return cached;
@@ -163,11 +159,11 @@ const createRawTokens = (code: string): TokenizedCode => ({
     line === ""
       ? []
       : [
-          {
-            color: "inherit",
-            content: line,
-          } as ThemedToken,
-        ]
+        {
+          color: "inherit",
+          content: line,
+        } as ThemedToken,
+      ]
   ),
 });
 
@@ -397,7 +393,13 @@ export const CodeBlockContent = ({
     let cancelled = false;
 
     // Reset to raw tokens when code changes (shows current code, not stale tokens)
-    setTokenized(highlightCode(code, language) ?? rawTokens);
+    let isCurrentCode = true;
+    const currentTokens = highlightCode(code, language);
+    if (currentTokens) {
+      setTokenized(currentTokens);
+    } else {
+      setTokenized(rawTokens);
+    }
 
     // Subscribe to async highlighting result
     highlightCode(code, language, (result) => {

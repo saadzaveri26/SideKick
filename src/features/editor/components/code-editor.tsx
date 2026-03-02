@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { EditorView , keymap } from "@codemirror/view"
+import { EditorView, keymap } from "@codemirror/view"
 
-import { indentWithTab} from "@codemirror/commands";
-import { indentationMarkers} from "@replit/codemirror-indentation-markers";
+import { indentWithTab } from "@codemirror/commands";
+import { indentationMarkers } from "@replit/codemirror-indentation-markers";
 import { oneDark } from "@codemirror/theme-one-dark"
 import { customTheme } from "../extensions/theme"
 import { getLanguageExtension } from "../extensions/language-extension";
@@ -15,10 +15,10 @@ import { selectionTooltip } from "../extensions/selection-tooltip";
 interface Props {
     fileName: string;
     initialValue?: string;
-    onChange : (value: string) => void;
+    onChange: (value: string) => void;
 }
 
-export const CodeEditor = ({ fileName, initialValue = "", onChange } : Props) => {
+export const CodeEditor = ({ fileName, initialValue = "", onChange }: Props) => {
     const editorRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<EditorView | null>(null);
 
@@ -31,14 +31,14 @@ export const CodeEditor = ({ fileName, initialValue = "", onChange } : Props) =>
 
         const view = new EditorView({
             doc: initialValue,
-            parent : editorRef.current,
+            parent: editorRef.current,
             extensions: [
                 oneDark,
                 customTheme,
                 customSetup,
                 languageExtension,
                 suggestion(fileName),
-                quickEdit(fileName),
+                quickEdit(),
                 selectionTooltip(),
                 keymap.of([indentWithTab]),
                 minimap(),
@@ -53,13 +53,13 @@ export const CodeEditor = ({ fileName, initialValue = "", onChange } : Props) =>
 
         viewRef.current = view;
 
-        return () =>  {
+        return () => {
             view.destroy();
         };
 
     }, [languageExtension]);
 
     return (
-        <div ref= {editorRef} className="size-full pl-4 bg-background" />
+        <div ref={editorRef} className="size-full pl-4 bg-background" />
     )
 }

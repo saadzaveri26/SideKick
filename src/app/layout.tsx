@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import {  IBM_Plex_Mono, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Providers } from "@/components/providers"; 
+import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import "allotment/dist/style.css";
 
@@ -14,7 +13,7 @@ const inter = Inter({
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
-  weight: ["400", "500","600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
 
-     <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${plexMono.variable} antialiased`}
       >
@@ -37,8 +36,8 @@ export default function RootLayout({
         <Providers>
           {children}
           <Toaster />
-          </Providers> 
+        </Providers>
       </body>
-     </html>
+    </html>
   );
 }

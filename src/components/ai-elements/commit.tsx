@@ -157,10 +157,17 @@ export const CommitTimestamp = ({
   children,
   ...props
 }: CommitTimestampProps) => {
-  const formatted = relativeTimeFormat.format(
-    Math.round((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+  const [now, setNow] = useState<number>(() => Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 60000); // Optional: Update every minute
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatted = now !== null ? relativeTimeFormat.format(
+    Math.round((date.getTime() - now) / (1000 * 60 * 60 * 24)),
     "day"
-  );
+  ) : "";
 
   return (
     <time

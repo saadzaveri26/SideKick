@@ -10,12 +10,10 @@ import { XIcon } from "lucide-react";
 
 const Tab = ({
     fileId,
-    isFirst,
     projectId,
 
 }: {
     fileId: Id<"files">;
-    isFirst: boolean;
     projectId: Id<"projects">;
 
 }) => {
@@ -35,12 +33,12 @@ const Tab = ({
 
     return (
         <div
-        onClick={() => setActiveTab(fileId)}
-        onDoubleClick={() => openFile(fileId, { pinned: true})}
-        className={cn(
-            "flex items-center gap-2 h-8.75 pl-2 pr-1.5 cursor-pointer text-muted-foreground gropu border-y border-x border-transparent hover:bg-accent/30",
-            isActive && "bg-background text-foreground border-x-border border-b-background -mb-px-drop-shadow",
-        )}
+            onClick={() => setActiveTab(fileId)}
+            onDoubleClick={() => openFile(fileId, { pinned: true })}
+            className={cn(
+                "flex items-center gap-2 h-8.75 pl-2 pr-1.5 cursor-pointer text-muted-foreground gropu border-y border-x border-transparent hover:bg-accent/30",
+                isActive && "bg-background text-foreground border-x-border border-b-background -mb-px-drop-shadow",
+            )}
         >
             {file === undefined ? (
                 <Spinner className="text-ring" />
@@ -53,22 +51,22 @@ const Tab = ({
                 {fileName}
             </span>
             <button
-            onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                closeTab(fileId);
-            }}
-            onKeyDown={(e) => {
-                if (e.key === " Enter" || e.key === " ") {
+                onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     closeTab(fileId);
-                }
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === " Enter" || e.key === " ") {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        closeTab(fileId);
+                    }
 
-            }}
-            className={cn(
-                "p-0.5 rounded-sm hover:bg-white/10 opacity-0 group-hover:opacity-100", isActive && "opacity-100"
-            )}
+                }}
+                className={cn(
+                    "p-0.5 rounded-sm hover:bg-white/10 opacity-0 group-hover:opacity-100", isActive && "opacity-100"
+                )}
             >
                 <XIcon className="size-3.5" />
 
@@ -80,7 +78,7 @@ const Tab = ({
 
 export const TopNavigation = ({
     projectId
-} : {
+}: {
     projectId: Id<"projects">
 }) => {
 
@@ -90,16 +88,15 @@ export const TopNavigation = ({
             <nav className="bg-sidebar flex items-center h-8.75 border-b">
                 {openTabs.map((fileId, index) => (
                     <Tab
-                    key={fileId}
-                    fileId={fileId}
-                    isFirst={index ===0 }
-                    projectId={projectId}
-                     />
+                        key={fileId}
+                        fileId={fileId}
+                        projectId={projectId}
+                    />
 
                 ))}
 
             </nav>
-            <ScrollBar orientation="horizontal"/>
+            <ScrollBar orientation="horizontal" />
         </ScrollArea>
     );
 
