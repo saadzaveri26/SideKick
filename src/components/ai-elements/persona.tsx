@@ -253,18 +253,10 @@ export const Persona: FC<PersonaProps> = memo(
     const asleepInput = useStateMachineInput(rive, stateMachine, "asleep");
 
     useEffect(() => {
-      if (listeningInput) {
-        listeningInput.value = state === "listening";
-      }
-      if (thinkingInput) {
-        thinkingInput.value = state === "thinking";
-      }
-      if (speakingInput) {
-        speakingInput.value = state === "speaking";
-      }
-      if (asleepInput) {
-        asleepInput.value = state === "asleep";
-      }
+      if (listeningInput && state === "listening") { listeningInput.fire(); }
+      if (thinkingInput && state === "thinking") { thinkingInput.fire(); }
+      if (speakingInput && state === "speaking") { speakingInput.fire(); }
+      if (asleepInput && state === "asleep") { asleepInput.fire(); }
     }, [state, listeningInput, thinkingInput, speakingInput, asleepInput]);
 
     const Component = source.hasModel ? PersonaWithModel : PersonaWithoutModel;

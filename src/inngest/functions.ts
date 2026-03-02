@@ -1,9 +1,15 @@
 import { inngest } from "./client";
 import { generateText } from "ai"
-import { mistral } from "@ai-sdk/mistral"
+import { createOpenAI}  from "@ai-sdk/openai"
 import { firecrawl } from "@/lib/firecrawl";
+import { openai } from "@inngest/agent-kit";
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+const openrouter = createOpenAI({
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: process.env.GITHUB_TOKEN as string,
+});
 
 export const demoGenerate = inngest.createFunction(
   { id: "demo-generate" },
@@ -32,7 +38,7 @@ export const demoGenerate = inngest.createFunction(
 
     await step.run("generate-text", async () => {
       return await generateText({
-        model: mistral("codestral-latest"),
+        model: openrouter("gpt-4o-mini"),
         prompt: finalPrompt,
         experimental_telemetry:{
             isEnabled: true,

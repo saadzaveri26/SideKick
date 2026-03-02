@@ -162,7 +162,6 @@ export type SchemaDisplayPathProps = HTMLAttributes<HTMLSpanElement>;
 export const SchemaDisplayPath = ({
   className,
   children,
-  ...props
 }: SchemaDisplayPathProps) => {
   const { path } = useContext(SchemaDisplayContext);
 
